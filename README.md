@@ -6,11 +6,15 @@ The source data covers 2.2M carriers, 5.9M roadside inspections, 6.9M violations
 
 ## Dashboard
 
+![Dashboard overview: KPIs, risk tier distribution and OOS rate by peer group](assets/screenshot.png)
+
 - KPI row: carriers, critical-risk count, and average OOS, severity and crash rates for the current filter
 - Risk tier distribution and average OOS rate by fleet peer group
 - Fleet size vs. OOS rate scatter plot, colored by risk tier
 - Sortable carrier table with CSV download
 - Filters for risk tier, peer group, state and fleet size
+
+![Fleet size vs. OOS rate scatter plot and carrier details table](assets/screenshot-details.png)
 
 ## Methodology
 

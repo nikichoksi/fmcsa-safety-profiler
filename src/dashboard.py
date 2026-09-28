@@ -51,11 +51,16 @@ state_filter = st.sidebar.multiselect(
     default=[]
 )
 
-min_fleet, max_fleet = st.sidebar.slider(
+# Fleet sizes span 1 to ~140K units with a median of 3, so a linear slider
+# squeezes almost everything into its first pixel; step through log-spaced values
+fleet_max = int(df['total_power_units'].max())
+fleet_steps = [s for s in [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000,
+                           10000, 20000, 50000, 100000] if s < fleet_max] + [fleet_max]
+min_fleet, max_fleet = st.sidebar.select_slider(
     "Fleet Size (Power Units)",
-    min_value=int(df['total_power_units'].min()),
-    max_value=int(df['total_power_units'].max()),
-    value=(5, 1000)
+    options=fleet_steps,
+    value=(5, 1000),
+    format_func=lambda v: f"{v:,}"
 )
 
 # Apply filters
@@ -100,9 +105,11 @@ with right:
     peer_order = ['Small Fleet', 'Medium Fleet', 'Large Fleet', 'Extra Large Fleet']
     peer_oos = filtered.groupby('peer_group')['oos_rate_raw'].mean().reindex(peer_order).dropna().reset_index()
     fig2 = px.bar(
-        peer_oos, x='peer_group', y='oos_rate_raw', color='peer_group',
+        peer_oos, x='peer_group', y='oos_rate_raw',
         labels={'peer_group': 'Peer Group', 'oos_rate_raw': 'Avg OOS Rate'}
     )
+    # One neutral color: peer groups are not risk levels, so avoid the tier palette
+    fig2.update_traces(marker_color='#5b8def')
     fig2.update_layout(showlegend=False, yaxis_tickformat='.0%')
     st.plotly_chart(fig2, width='stretch')
 
@@ -120,6 +127,8 @@ fig3 = px.scatter(
     labels={'total_power_units': 'Power Units (log scale)', 'oos_rate_raw': 'OOS Rate', 'severity_rate_raw': 'Severity Rate',
             'crash_rate_raw': 'Crash Rate', 'risk_tier': 'Risk Tier'}
 )
+# Drop the default marker outlines, which turn small points into white dots
+fig3.update_traces(marker=dict(line=dict(width=0), opacity=0.7))
 fig3.update_xaxes(tickvals=[1, 10, 100, 1000, 10000, 100000], tickformat=',d', minor_showgrid=False)
 fig3.update_yaxes(tickformat='.0%')
 st.plotly_chart(fig3, width='stretch')
@@ -134,7 +143,20 @@ display_cols = ['legal_name', 'phy_state', 'peer_group', 'total_power_units',
 st.dataframe(
     filtered.sort_values('oos_rate', ascending=False)[display_cols],
     width='stretch',
-    hide_index=True
+    hide_index=True,
+    column_config={
+        'legal_name': 'Carrier',
+        'phy_state': 'State',
+        'peer_group': 'Peer Group',
+        'total_power_units': st.column_config.NumberColumn('Power Units', format='%d'),
+        'inspections': 'Inspections',
+        'violations': 'Violations',
+        'oos_rate_raw': st.column_config.NumberColumn('OOS Rate', format='percent'),
+        'severity_rate_raw': st.column_config.NumberColumn('Severity Rate', format='%.2f'),
+        'crash_rate_raw': st.column_config.NumberColumn('Crashes / 100 Units', format='%.1f'),
+        'fatalities': 'Fatalities',
+        'risk_tier': 'Risk Tier',
+    }
 )
 
 # Download button
