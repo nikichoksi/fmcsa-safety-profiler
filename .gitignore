@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Raw FMCSA data and the SQLite build are too large for GitHub;
+# only the exported data/safety_scores.parquet is committed
+data/*
+!data/safety_scores.parquet
+database/
