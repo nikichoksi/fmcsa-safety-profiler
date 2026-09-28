@@ -32,7 +32,7 @@ A carrier with 3 inspections and 1 OOS inspection has a raw OOS rate of 33%, whi
 adjusted_rate = (events + k × population_mean) / (exposure + k)
 ```
 
-with `k = 10` inspections for OOS and severity rates, and `k = 20` power units for crash rate. The dashboard shows raw rates; the adjusted rates are used only to assign tiers and rank the table.
+with `k = 10` inspections for OOS and severity rates, and `k = 20` power units for crash rate. The dashboard displays raw rates; adjusted rates are used only for tiering and table ranking.
 
 ### Risk tiers
 
