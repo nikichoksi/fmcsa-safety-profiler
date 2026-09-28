@@ -4,6 +4,12 @@ Scores active U.S. motor carriers on safety risk using public FMCSA Safety Measu
 
 The source data covers 2.2M carriers, 5.9M roadside inspections, 6.9M violations and 258K crashes from August 2024 to July 2026. After filtering, 287,990 active carriers with at least 3 inspections are scored.
 
+## Live Demo
+
+**[fmcsa-safety-profiler-dashboard.streamlit.app](https://fmcsa-safety-profiler-dashboard.streamlit.app/)**
+
+Hosted on Streamlit Community Cloud. If the app has been idle, click the wake-up button and give it a minute to start.
+
 ## Dashboard
 
 ![Dashboard overview: KPIs, risk tier distribution and OOS rate by peer group](assets/screenshot.png)
