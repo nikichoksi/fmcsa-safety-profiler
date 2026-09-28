@@ -100,3 +100,7 @@ When `database/fmcsa.db` exists, the dashboard reads from it; otherwise it reads
 - Risk tiers are relative (percentile-based), not an official FMCSA rating. A carrier's tier can change when other carriers' data changes.
 - Crash counts include all reportable crashes regardless of fault.
 - Rates are not time-weighted; FMCSA's own SMS weights recent events more heavily.
+
+## Author
+
+Niki Choksi — [LinkedIn](https://www.linkedin.com/in/nikichoksi/) | [GitHub](https://github.com/nikichoksi)
